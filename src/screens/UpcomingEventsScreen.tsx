@@ -25,6 +25,8 @@ import {
   getAllScheduledNotifications,
   NotificationSettings,
 } from '../services/notificationService';
+import AddToCalendarButton from '../components/AddToCalendarButton';
+import { getEventImage } from '../utils/imageMap';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -272,7 +274,7 @@ const UpcomingEventsScreen: React.FC<UpcomingEventsScreenProps> = ({ onClose, on
     >
       {event.image && (
         <Image
-          source={{ uri: `https://www.chabadtimeline.com${event.image}` }}
+          source={getEventImage(event.image)}
           style={styles.eventImage}
           resizeMode="cover"
         />
@@ -320,12 +322,15 @@ const UpcomingEventsScreen: React.FC<UpcomingEventsScreenProps> = ({ onClose, on
         )}
 
         {!isRecent && (
-          <TouchableOpacity
+          <AddToCalendarButton
+            title={event.title}
+            description={event.description}
+            location={event.location}
+            hebrewDate={event.hebrewDate}
+            gregorianDate={event.gregorianDate}
             style={styles.calendarButton}
-            onPress={() => addToCalendar(event)}
-          >
-            <Text style={styles.calendarButtonText}>Add to Calendar</Text>
-          </TouchableOpacity>
+            textStyle={styles.calendarButtonText}
+          />
         )}
       </View>
     </TouchableOpacity>

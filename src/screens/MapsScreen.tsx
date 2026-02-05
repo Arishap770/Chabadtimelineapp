@@ -15,6 +15,7 @@ import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { timelineEvents, TimelineEvent } from '../../timeline-data';
 import FilterModal, { FilterState } from '../components/FilterModal';
+import { getEventImage } from '../utils/imageMap';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -210,7 +211,7 @@ const MapsScreen: React.FC<MapsScreenProps> = ({ onClose, onEventPress }) => {
                 <View style={styles.calloutContainer}>
                   {event.image && (
                     <Image
-                      source={{ uri: `https://www.chabadtimeline.com${event.image}` }}
+                      source={getEventImage(event.image)}
                       style={styles.calloutImage}
                       resizeMode="cover"
                     />

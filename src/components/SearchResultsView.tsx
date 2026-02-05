@@ -8,6 +8,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import { TimelineEvent } from '../../timeline-data';
+import { getEventImage } from '../utils/imageMap';
 
 interface SearchResultsViewProps {
   events: TimelineEvent[];
@@ -31,7 +32,7 @@ export default function SearchResultsView({ events, onEventPress }: SearchResult
             activeOpacity={0.9}
           >
             <ImageBackground
-              source={{ uri: `https://www.chabadtimeline.com${event.image}` }}
+              source={getEventImage(event.image)}
               style={styles.cardImage}
               imageStyle={styles.cardImageStyle}
             >

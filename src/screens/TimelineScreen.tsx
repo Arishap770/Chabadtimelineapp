@@ -21,6 +21,7 @@ import FrierdikerRebbeScreen from './FrierdikerRebbeScreen';
 import LubavitcherRebbeScreen from './LubavitcherRebbeScreen';
 import { FilterState } from '../components/FilterModal';
 import { timelineEvents, TimelineEvent } from '../../timeline-data';
+import { getEventImage } from '../utils/imageMap';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -185,7 +186,7 @@ export default function TimelineScreen() {
         {timelineEvents.map((event, index) => (
           <ImageBackground
             key={index}
-            source={{ uri: `https://www.chabadtimeline.com${event.image}` }}
+            source={getEventImage(event.image)}
             style={styles.eventPanel}
             imageStyle={[
               styles.backgroundImage,

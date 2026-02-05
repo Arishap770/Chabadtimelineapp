@@ -231,7 +231,7 @@ const RebbeScreen: React.FC<RebbeScreenProps> = ({ rebbeData, onClose, onEventPr
                 >
                   {event.image && (
                     <Image
-                      source={{ uri: `https://www.chabadtimeline.com${event.image}` }}
+                      source={getEventImage(event.image)}
                       style={styles.eventImage}
                       resizeMode="cover"
                     />

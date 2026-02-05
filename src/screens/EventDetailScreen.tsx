@@ -10,9 +10,12 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { TimelineEvent } from '../../timeline-data';
 import { detailedEvents } from '../../detailed-events-data';
 import ShareModal from '../components/ShareModal';
+import AddToCalendarButton from '../components/AddToCalendarButton';
+import { getEventImage } from '../utils/imageMap';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -65,14 +68,14 @@ export default function EventDetailScreen({
               {event.title}
             </Text>
             <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
-              <Text style={styles.shareIcon}>↗</Text>
+              <Ionicons name="share-outline" size={24} color="#4a9eff" />
             </TouchableOpacity>
           </View>
 
           <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
             {/* Hero Image */}
             <Image
-              source={{ uri: `https://www.chabadtimeline.com${event.image}` }}
+              source={getEventImage(event.image)}
               style={styles.heroImage}
               resizeMode="cover"
             />
@@ -139,12 +142,13 @@ export default function EventDetailScreen({
 
               {/* Action Buttons */}
               <View style={styles.actionsContainer}>
-                <TouchableOpacity
-                  style={styles.actionButton}
-                  onPress={onAddToCalendar}
-                >
-                  <Text style={styles.actionButtonText}>Add to Calendar</Text>
-                </TouchableOpacity>
+                <AddToCalendarButton
+                  title={event.title}
+                  description={detailedEvent?.shortDescription || event.description}
+                  location={event.location}
+                  hebrewDate={event.hebrewDate}
+                  year={event.year}
+                />
 
                 <TouchableOpacity
                   style={styles.actionButton}
@@ -260,11 +264,6 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  shareIcon: {
-    fontSize: 28,
-    color: '#4a9eff',
-    fontWeight: '600',
   },
   content: {
     flex: 1,
