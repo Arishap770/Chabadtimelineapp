@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import HamburgerMenu from './HamburgerMenu';
 import FilterModal, { FilterState } from './FilterModal';
+import { useTranslation } from '../i18n/LanguageContext';
 
 interface HeaderProps {
   onNavigate: (screen: string) => void;
@@ -12,6 +13,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onNavigate, searchQuery, onSearchChange, filters, onFiltersChange }: HeaderProps) {
+  const { t } = useTranslation();
   const [menuVisible, setMenuVisible] = useState(false);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
 
@@ -33,7 +35,7 @@ export default function Header({ onNavigate, searchQuery, onSearchChange, filter
             <Text style={styles.searchIcon}>🔍</Text>
             <TextInput
               style={styles.searchInput}
-              placeholder="Search events..."
+              placeholder={t('searchPlaceholder')}
               placeholderTextColor="#666"
               value={searchQuery}
               onChangeText={onSearchChange}
@@ -44,7 +46,11 @@ export default function Header({ onNavigate, searchQuery, onSearchChange, filter
             style={styles.filterButton}
             onPress={() => setFilterModalVisible(true)}
           >
-            <Text style={styles.filterIcon}>⚙</Text>
+            <View style={styles.filterIconContainer}>
+              <View style={styles.filterLine} />
+              <View style={styles.filterLine} />
+              <View style={styles.filterLine} />
+            </View>
             {activeFilterCount > 0 && (
               <View style={styles.filterBadge}>
                 <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
@@ -139,6 +145,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+  },
+  filterIconContainer: {
+    width: 16,
+    height: 14,
+    justifyContent: 'space-between',
+  },
+  filterLine: {
+    height: 2,
+    backgroundColor: '#fff',
+    borderRadius: 1,
   },
   filterIcon: {
     fontSize: 18,

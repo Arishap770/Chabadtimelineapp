@@ -221,7 +221,7 @@ const MapsScreen: React.FC<MapsScreenProps> = ({ onClose, onEventPress }) => {
                       {event.title}
                     </Text>
                     <Text style={styles.calloutLocation}>
-                      📍 {event.location}
+                      {event.location}
                     </Text>
                     <Text style={styles.calloutTap}>Tap for details</Text>
                   </View>
@@ -236,7 +236,7 @@ const MapsScreen: React.FC<MapsScreenProps> = ({ onClose, onEventPress }) => {
           style={styles.recenterButton}
           onPress={recenterOnUser}
         >
-          <Text style={styles.recenterIcon}>📍</Text>
+          <Text style={styles.recenterIcon}>⊙</Text>
         </TouchableOpacity>
 
         {/* Event Count */}

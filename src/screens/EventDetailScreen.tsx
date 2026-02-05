@@ -65,7 +65,7 @@ export default function EventDetailScreen({
               {event.title}
             </Text>
             <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
-              <Text style={styles.shareButtonText}>Share</Text>
+              <Text style={styles.shareIcon}>↗</Text>
             </TouchableOpacity>
           </View>
 
@@ -115,7 +115,7 @@ export default function EventDetailScreen({
               {/* Metadata Badges */}
               <View style={styles.badgesContainer}>
                 <TouchableOpacity style={styles.badge} onPress={onViewMap}>
-                  <Text style={styles.badgeText}>📍 {event.location}</Text>
+                  <Text style={styles.badgeText}>{event.location}</Text>
                 </TouchableOpacity>
 
                 {event.tags.map((tag, index) => (
@@ -166,7 +166,7 @@ export default function EventDetailScreen({
               {/* Quotes Section */}
               {detailedEvent?.quotes && detailedEvent.quotes.length > 0 && (
                 <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>Related Quotes</Text>
+                  <Text style={styles.sectionTitle}>Hayom Yom</Text>
                   {detailedEvent.quotes.map((quote, index) => (
                     <View key={index} style={styles.quoteContainer}>
                       <Text style={styles.quoteText}>"{quote.text}"</Text>
@@ -230,7 +230,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
-    paddingVertical: 12,
+    paddingTop: 60,
+    paddingBottom: 12,
     backgroundColor: '#1a1a1a',
     borderBottomWidth: 1,
     borderBottomColor: '#333',
@@ -260,9 +261,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  shareButtonText: {
-    fontSize: 24,
-    color: '#fff',
+  shareIcon: {
+    fontSize: 28,
+    color: '#4a9eff',
+    fontWeight: '600',
   },
   content: {
     flex: 1,

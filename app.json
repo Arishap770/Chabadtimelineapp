@@ -1,34 +1,57 @@
 {
   "expo": {
-    "name": "ChabadTimelineApp",
+    "name": "Chabad Timeline",
     "slug": "ChabadTimelineApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0a0a0a"
     },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.chabadtimeline.app",
+      "buildNumber": "1",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCalendarsUsageDescription": "This app needs access to your calendar to add Chabad events.",
+        "NSLocationWhenInUseUsageDescription": "This app needs your location to show nearby event locations on the map.",
+        "UIBackgroundModes": ["audio"]
       }
     },
     "android": {
+      "package": "com.chabadtimeline.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0a0a0a"
       },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ],
       "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#4a9eff"
+    },
+    "plugins": [
+      "expo-calendar",
+      "expo-location",
+      "expo-notifications"
+    ],
     "extra": {
       "eas": {
         "projectId": "757c1b97-841a-41bf-b8e5-c1c7a93b7cab"

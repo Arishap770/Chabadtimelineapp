@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet, ImageBackground, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ImageBackground, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../components/Header';
 import SearchResultsView from '../components/SearchResultsView';
@@ -8,10 +8,38 @@ import EventDetailScreen from './EventDetailScreen';
 import ShareModal from '../components/ShareModal';
 import CalendarScreen from './CalendarScreen';
 import MapsScreen from './MapsScreen';
+import UpcomingEventsScreen from './UpcomingEventsScreen';
+import DonateScreen from './DonateScreen';
+import FeedbackScreen from './FeedbackScreen';
+import SettingsScreen from './SettingsScreen';
+import AlterRebbeScreen from './AlterRebbeScreen';
+import MittelerRebbeScreen from './MittelerRebbeScreen';
+import TzemachTzedekScreen from './TzemachTzedekScreen';
+import RebbeMaharashScreen from './RebbeMaharashScreen';
+import RebbeRashabScreen from './RebbeRashabScreen';
+import FrierdikerRebbeScreen from './FrierdikerRebbeScreen';
+import LubavitcherRebbeScreen from './LubavitcherRebbeScreen';
 import { FilterState } from '../components/FilterModal';
 import { timelineEvents, TimelineEvent } from '../../timeline-data';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+// Helper function to parse image position
+const getImagePosition = (position: string) => {
+  // Supports: "top", "center", "bottom", "left", "right", "top left", "top right", etc.
+  // Or percentage values like "50% 30%" or "center 20%"
+  const mapping: { [key: string]: any } = {
+    'top': { alignSelf: 'flex-start' },
+    'bottom': { alignSelf: 'flex-end' },
+    'center': { alignSelf: 'center' },
+    'top left': { alignSelf: 'flex-start' },
+    'top right': { alignSelf: 'flex-start' },
+    'bottom left': { alignSelf: 'flex-end' },
+    'bottom right': { alignSelf: 'flex-end' },
+  };
+  
+  return mapping[position.toLowerCase()] || {};
+};
 
 export default function TimelineScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,6 +50,11 @@ export default function TimelineScreen() {
   const [eventToShare, setEventToShare] = useState<TimelineEvent | null>(null);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [mapsVisible, setMapsVisible] = useState(false);
+  const [upcomingEventsVisible, setUpcomingEventsVisible] = useState(false);
+  const [donateVisible, setDonateVisible] = useState(false);
+  const [feedbackVisible, setFeedbackVisible] = useState(false);
+  const [settingsVisible, setSettingsVisible] = useState(false);
+  const [activeRebbeScreen, setActiveRebbeScreen] = useState<string | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleNavigate = (screen: string) => {
@@ -29,6 +62,16 @@ export default function TimelineScreen() {
       setCalendarVisible(true);
     } else if (screen === 'maps') {
       setMapsVisible(true);
+    } else if (screen === 'upcoming-events') {
+      setUpcomingEventsVisible(true);
+    } else if (screen === 'Donate') {
+      setDonateVisible(true);
+    } else if (screen === 'Feedback') {
+      setFeedbackVisible(true);
+    } else if (screen === 'Settings') {
+      setSettingsVisible(true);
+    } else if (screen.startsWith('Rebbe-')) {
+      setActiveRebbeScreen(screen);
     }
     console.log('Navigate to:', screen);
   };
@@ -144,7 +187,10 @@ export default function TimelineScreen() {
             key={index}
             source={{ uri: `https://www.chabadtimeline.com${event.image}` }}
             style={styles.eventPanel}
-            imageStyle={styles.backgroundImage}
+            imageStyle={[
+              styles.backgroundImage,
+              event.imagePosition && { resizeMode: 'cover', ...getImagePosition(event.imagePosition) }
+            ]}
           >
             <LinearGradient
               colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.85)']}
@@ -163,7 +209,7 @@ export default function TimelineScreen() {
                 
                 <View style={styles.metaContainer}>
                   <TouchableOpacity style={styles.locationPill}>
-                    <Text style={styles.pillText}>📍 {event.location}</Text>
+                    <Text style={styles.pillText}>{event.location}</Text>
                   </TouchableOpacity>
                   
                   {event.tags.map((tag, tagIndex) => (
@@ -233,6 +279,108 @@ export default function TimelineScreen() {
           onClose={() => setMapsVisible(false)}
           onEventPress={(event) => {
             setMapsVisible(false);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {upcomingEventsVisible && (
+        <UpcomingEventsScreen
+          onClose={() => setUpcomingEventsVisible(false)}
+          onEventPress={(event) => {
+            setUpcomingEventsVisible(false);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {donateVisible && (
+        <DonateScreen
+          onClose={() => setDonateVisible(false)}
+        />
+      )}
+
+      {feedbackVisible && (
+        <FeedbackScreen
+          onClose={() => setFeedbackVisible(false)}
+        />
+      )}
+
+      {settingsVisible && (
+        <SettingsScreen
+          onClose={() => setSettingsVisible(false)}
+          onNavigateToFeedback={() => {
+            setSettingsVisible(false);
+            setFeedbackVisible(true);
+          }}
+        />
+      )}
+
+      {activeRebbeScreen === 'Rebbe-Alter Rebbe' && (
+        <AlterRebbeScreen
+          onClose={() => setActiveRebbeScreen(null)}
+          onEventPress={(event) => {
+            setActiveRebbeScreen(null);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {activeRebbeScreen === 'Rebbe-Mitteler Rebbe' && (
+        <MittelerRebbeScreen
+          onClose={() => setActiveRebbeScreen(null)}
+          onEventPress={(event) => {
+            setActiveRebbeScreen(null);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {activeRebbeScreen === 'Rebbe-Tzemach Tzedek' && (
+        <TzemachTzedekScreen
+          onClose={() => setActiveRebbeScreen(null)}
+          onEventPress={(event) => {
+            setActiveRebbeScreen(null);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {activeRebbeScreen === 'Rebbe-Rebbe Maharash' && (
+        <RebbeMaharashScreen
+          onClose={() => setActiveRebbeScreen(null)}
+          onEventPress={(event) => {
+            setActiveRebbeScreen(null);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {activeRebbeScreen === 'Rebbe-Rebbe Rashab' && (
+        <RebbeRashabScreen
+          onClose={() => setActiveRebbeScreen(null)}
+          onEventPress={(event) => {
+            setActiveRebbeScreen(null);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {activeRebbeScreen === 'Rebbe-Frierdiker Rebbe' && (
+        <FrierdikerRebbeScreen
+          onClose={() => setActiveRebbeScreen(null)}
+          onEventPress={(event) => {
+            setActiveRebbeScreen(null);
+            setSelectedEvent(event);
+          }}
+        />
+      )}
+
+      {activeRebbeScreen === 'Rebbe-Lubavitcher Rebbe' && (
+        <LubavitcherRebbeScreen
+          onClose={() => setActiveRebbeScreen(null)}
+          onEventPress={(event) => {
+            setActiveRebbeScreen(null);
             setSelectedEvent(event);
           }}
         />

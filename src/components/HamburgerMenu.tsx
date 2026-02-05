@@ -8,7 +8,9 @@ import {
   Animated,
   Dimensions,
   ScrollView,
+  Platform,
 } from 'react-native';
+import { useTranslation } from '../i18n/LanguageContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -19,6 +21,7 @@ interface HamburgerMenuProps {
 }
 
 export default function HamburgerMenu({ visible, onClose, onNavigate }: HamburgerMenuProps) {
+  const { t } = useTranslation();
   const [slideAnim] = useState(new Animated.Value(SCREEN_WIDTH));
   const [rebbeimExpanded, setRebbeimExpanded] = useState(false);
 
@@ -85,29 +88,36 @@ export default function HamburgerMenu({ visible, onClose, onNavigate }: Hamburge
               style={styles.menuItem}
               onPress={() => handleNavigate('timeline')}
             >
-              <Text style={styles.menuItemText}>Timeline</Text>
+              <Text style={styles.menuItemText}>{t('timeline')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => handleNavigate('calendar')}
             >
-              <Text style={styles.menuItemText}>Calendar</Text>
+              <Text style={styles.menuItemText}>{t('calendar')}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => handleNavigate('upcoming-events')}
+            >
+              <Text style={styles.menuItemText}>{t('upcomingEvents')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => handleNavigate('maps')}
             >
-              <Text style={styles.menuItemText}>Maps</Text>
+              <Text style={styles.menuItemText}>{t('maps')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => setRebbeimExpanded(!rebbeimExpanded)}
             >
-              <Text style={styles.menuItemText}>Rebbeim</Text>
-              <Text style={styles.expandIcon}>{rebbeimExpanded ? '▼' : '▶'}</Text>
+              <Text style={styles.menuItemText}>{t('rebbeim')}</Text>
+              <Text style={styles.expandIcon}>{rebbeimExpanded ? '▾' : '▸'}</Text>
             </TouchableOpacity>
 
             {rebbeimExpanded && (
@@ -128,14 +138,21 @@ export default function HamburgerMenu({ visible, onClose, onNavigate }: Hamburge
               style={styles.menuItem}
               onPress={() => handleNavigate('Donate')}
             >
-              <Text style={styles.menuItemText}>Donate</Text>
+              <Text style={styles.menuItemText}>{t('donate')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => handleNavigate('Feedback')}
             >
-              <Text style={styles.menuItemText}>Feedback</Text>
+              <Text style={styles.menuItemText}>{t('feedback')}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => handleNavigate('Settings')}
+            >
+              <Text style={styles.menuItemText}>{t('settings')}</Text>
             </TouchableOpacity>
           </ScrollView>
         </Animated.View>

@@ -202,7 +202,7 @@ const CalendarScreen: React.FC<{ onClose: () => void; onEventPress?: (event: Tim
             </Text>
           )}
           {event.location && (
-            <Text style={styles.eventLocation}>📍 {event.location}</Text>
+            <Text style={styles.eventLocation}>{event.location}</Text>
           )}
         </View>
       </Pressable>
